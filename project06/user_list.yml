@@ -1,0 +1,21 @@
+---
+  users:
+     - name: john 
+       first: john 
+       middle: jo
+       last: hn 
+       uid: 3212
+
+     - name: erick
+       first: erick 
+       middle: eri
+       last: ck  
+       uid: 3213
+
+     - name: jack 
+       first: jack  
+       middle: ja 
+       last: cks 
+       uid: 3214 
+
+     
