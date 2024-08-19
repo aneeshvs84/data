@@ -1,0 +1,43 @@
+---
+- name: Apache Deployment
+  hosts: web
+  become: true
+  vars:
+    pkgs:
+      - httpd
+      - firewalld
+  tasks:
+    - name: Installing packages
+      ansible.builtin.yum:
+        name: "{{ item }}"
+        state: present
+      loop: "{{ pkgs }}"
+    - name: Enabling and starting services
+      ansible.builtin.service:
+        name: "{{ item }}"
+        state: started
+        enabled: yes
+      loop: "{{ pkgs }}"
+    - name: Adding Firewall rules
+      ansible.posix.firewalld:
+        service: "{{ item }}"
+        immediate: yes
+        permanent: yes
+        state: enabled
+      loop:
+        - http
+        - https
+    - name: Copying configuration file
+      ansible.builtin.copy:
+        src: httpd.conf
+        dest: /etc/httpd/conf.d/httpd.conf
+      notify: restart apache
+    - name: Copying Content to the web server
+      ansible.builtin.copy:
+        content: "MY WEB SERVER"
+        dest: /var/www/html/index.html
+  handlers:
+    - name: restart apache
+      ansible.builtin.service:
+        name: httpd
+        state: restarted

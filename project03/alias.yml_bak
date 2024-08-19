@@ -1,0 +1,4 @@
+---
+- name: Apache deployment.
+  hosts: web 
+  become: true 
