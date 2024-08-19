@@ -1,0 +1,13 @@
+---
+- name: Creating users.
+  hosts: prod 
+  vars_files: 
+     - user_list.yml
+  tasks:
+     - name: Create users.
+       ansible.builtin.user:
+         name: "{{ item }}"
+         state: present 
+         password: "{{ 'redhat' | password_hash('sha512') }}"
+       loop: "{{ developer }}"
+...
