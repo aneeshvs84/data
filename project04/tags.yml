@@ -1,0 +1,23 @@
+---
+- name: Testing tags
+  hosts: web
+  become: true
+  tasks:
+    - name: play for tag blue
+      ansible.builtin.copy:
+        content: "BLUE"
+        dest: /var/www/html/index.html
+      tags: [never,blue]
+      notify: restart apache
+    - name: play for tag red
+      ansible.builtin.copy:
+        content: "RED"
+        dest: /var/www/html/index.html
+      tags: [never,red]
+      notify: restart apache
+  handlers:
+    - name: restart apache
+      ansible.builtin.service:
+        name: httpd
+        state: restarted
+        enabled: yes
